@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>СНТ «Мичуринец»</title>
+  <meta name="description" content="Официальный сайт садоводческого некоммерческого товарищества «Мичуринец»: объявления, документы, взносы, контакты правления.">
+  <meta name="theme-color" content="#eaf4fb">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sky: #e6f2fb;        /* небо над первым экраном */
+      --paper: #ffffff;      /* фон страницы */
+      --surface: #f5f8f3;    /* плашки и карточки */
+      --ink: #1e2622;        /* графитовый текст */
+      --footer: #1f3a2a;     /* подвал */
+      --leaf: #2e8540;       /* ссылки, основные кнопки */
+      --leaf-dark: #236b33;
+      --leaf-soft: #e3f2e1;
+      --water: #2b84c6;      /* сезон подачи воды */
+      --water-soft: #e1eff9;
+      --apple: #d63a2f;      /* «важно», стрелка сегодняшнего дня */
+      --sun: #f3c34a;        /* осень на календаре */
+      --muted: #5b655f;
+      --rule: #e1e6df;
+      --mark: #fff0b3;       /* подсветка незаполненных данных */
+      --max: 1200px;
+      --display: "Yeseva One", Georgia, serif;
+      --sans: "Manrope", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      --ease: cubic-bezier(.2, .7, .2, 1);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body {
+      margin: 0; font-family: var(--sans); font-size: 17.5px; line-height: 1.65;
+      color: var(--ink); background: var(--paper); -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--leaf); text-underline-offset: 3px; text-decoration-thickness: 1px; transition: color .15s; }
+    a:hover { color: var(--ink); }
+    :focus-visible { outline: 3px solid var(--apple); outline-offset: 3px; border-radius: 4px; }
+    svg { flex: none; }
+    h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.12; margin: 0; text-wrap: balance; }
+    h2 { font-size: clamp(2.2rem, 4.6vw, 3.4rem); letter-spacing: -.005em; }
+    h3 { font-size: 1.45rem; }
+    p { margin: 0 0 1em; text-wrap: pretty; }
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 16px; }
+    .ph { background: var(--mark); color: var(--ink); padding: 0 4px; border-radius: 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+    .skip { position: absolute; left: 16px; top: -60px; background: var(--apple); color: #fff; padding: 10px 16px; border-radius: 8px; z-index: 30; }
+    .skip:focus { top: 12px; color: #fff; }
+
+    /* Шапка: прозрачная над тёмным экраном, светлая после прокрутки */
+    .header { position: fixed; inset: 0 0 auto; z-index: 20; color: var(--ink); transition: background-color .25s, color .25s, box-shadow .25s; }
+    .header.dim { background: color-mix(in srgb, var(--sky) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .header.scrolled { background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); box-shadow: 0 1px 0 var(--rule); }
+    .header .container { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .logo { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; font-family: var(--display); font-size: 1.35rem; }
+    .logo:hover { color: inherit; }
+    .logo svg { width: 32px; height: 32px; }
+    .nav { display: flex; gap: 4px; }
+    .nav a { color: inherit; text-decoration: none; padding: 8px 12px; border-radius: 999px; font-size: .92rem; font-weight: 500; opacity: .85; transition: opacity .15s, background-color .15s, color .15s; }
+    .nav a:hover { opacity: 1; background: rgba(255,255,255,.7); }
+    .header.scrolled .nav a:hover { background: var(--leaf-soft); }
+    .nav a.active { opacity: 1; background: var(--leaf); color: #fff; }
+    .burger { display: none; background: none; border: 0; color: inherit; width: 44px; height: 44px; align-items: center; justify-content: center; cursor: pointer; border-radius: 10px; }
+    .burger svg { width: 26px; height: 26px; }
+    .burger path { transition: transform .2s var(--ease), opacity .2s; transform-origin: center; }
+    .burger[aria-expanded="true"] .l1 { transform: translateY(6px) rotate(45deg); }
+    .burger[aria-expanded="true"] .l2 { opacity: 0; }
+    .burger[aria-expanded="true"] .l3 { transform: translateY(-6px) rotate(-45deg); }
+
+    /* Первый экран: название и годовой круг сада */
+    .hero {
+      position: relative; overflow: hidden; color: var(--ink);
+      background: linear-gradient(180deg, var(--sky) 0%, #f3f9fd 70%, var(--paper) 100%);
+      padding: 140px 0 96px;
+    }
+    .hero .container { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 480px); gap: 56px; align-items: center; }
+    .hero-kicker { color: var(--leaf); font-weight: 500; font-size: 1.05rem; margin: 0 0 18px; }
+    .hero h1 { font-size: clamp(3rem, 6.4vw, 6.4rem); line-height: .95; letter-spacing: -.02em; margin: 0 0 32px; }
+    .hero h1 .q { color: var(--apple); }
+    .hero-intro { font-size: 1.2rem; max-width: 30rem; color: var(--muted); margin: 0 0 36px; }
+    .hero-links { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 12px 24px; border-radius: 999px;
+      text-decoration: none; font: inherit; font-size: 1rem; font-weight: 600; border: 1.5px solid currentColor;
+      color: inherit; background: transparent; cursor: pointer;
+      transition: background-color .15s, color .15s, border-color .15s, transform .15s var(--ease);
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-apple { background: var(--leaf); border-color: var(--leaf); color: #fff; }
+    .btn-apple:hover { background: var(--leaf-dark); border-color: var(--leaf-dark); color: #fff; }
+    .hero .btn-ghost { color: var(--ink); border-color: #c7d3cb; background: rgba(255,255,255,.6); }
+    .hero .btn-ghost:hover { background: #fff; border-color: var(--leaf); color: var(--leaf); }
+    .btn-dark { background: var(--leaf); border-color: var(--leaf); color: #fff; }
+    .btn-dark:hover { background: var(--leaf-dark); border-color: var(--leaf-dark); color: #fff; }
+    .btn-line { color: var(--ink); }
+    .btn-line:hover { background: var(--ink); color: var(--paper); }
+
+    .wheel { position: relative; margin: 0; width: 100%; max-width: 480px; justify-self: end; }
+    .wheel svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .wheel .seg { stroke: #fff; stroke-width: 3; }
+    .wheel .mlabel { fill: var(--muted); font: 500 13px var(--sans); text-anchor: middle; dominant-baseline: middle; }
+    .wheel .mlabel.now { fill: var(--ink); font-weight: 700; }
+    .wheel .water { fill: none; stroke: var(--water); stroke-width: 12; stroke-linecap: round; }
+    .wheel .water.off { stroke: #a9cde9; }
+    .wheel .water-label { fill: var(--water); font: 600 12px var(--sans); letter-spacing: .02em; }
+    .wheel .hand { stroke: var(--apple); stroke-width: 3; stroke-linecap: round; }
+    .wheel .hand-dot { fill: var(--apple); stroke: #fff; stroke-width: 4; }
+    .wheel .hub { fill: #fff; filter: drop-shadow(0 6px 18px rgba(43,132,198,.15)); }
+    .wheel-center {
+      position: absolute; inset: 0; margin: auto; width: 46%; height: 46%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; pointer-events: none;
+    }
+    .wheel-center .date { font-family: var(--display); font-size: clamp(1.6rem, 3.4vw, 2.3rem); line-height: 1.05; }
+    .wheel-center .water-now { margin-top: 10px; font-size: .88rem; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; line-height: 1.3; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: #b9c2bc; flex: none; }
+    .on > .dot, .dot.on { background: var(--water); box-shadow: 0 0 0 4px rgba(43,132,198,.2); }
+    .wheel figcaption { text-align: center; margin-top: 14px; color: var(--muted); font-size: .92rem; }
+    .wheel figcaption .ph { font-size: .88rem; }
+
+    /* Секции */
+    .section { padding: 104px 0; }
+    .section + .section { border-top: 1px solid var(--rule); }
+    .section > .container { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 64px; }
+    .section-head { position: sticky; top: 112px; align-self: start; }
+    .section-head p { color: var(--muted); margin: 14px 0 0; max-width: 24ch; }
+    .section-head::after { content: ""; display: block; width: 48px; height: 3px; background: var(--leaf); border-radius: 2px; margin-top: 22px; }
+
+    /* Объявления */
+    .news { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+    .news li { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 28px; padding: 28px 0; border-bottom: 1px solid var(--rule); }
+    .news time { font-size: .95rem; color: var(--muted); padding-top: 6px; font-variant-numeric: tabular-nums; }
+    .news h3 { margin-bottom: 8px; }
+    .news p { margin: 0; max-width: 60ch; }
+    .tag { display: inline-block; font-size: .82rem; font-weight: 600; color: var(--leaf); background: var(--leaf-soft); padding: 3px 11px; border-radius: 999px; margin-bottom: 10px; }
+    .news li.urgent {
+      grid-template-columns: 1fr; gap: 6px; padding: 36px 36px 34px; border: 0; border-radius: 22px;
+      background: var(--apple); color: #fff; margin-bottom: 8px;
+      box-shadow: 0 24px 48px -32px rgba(214,58,47,.8);
+    }
+    .news li.urgent time { color: rgba(255,255,255,.8); padding: 0; }
+    .news li.urgent .ph { background: rgba(255,255,255,.22); color: #fff; }
+    .news li.urgent .tag { background: #fff; color: var(--apple); }
+    .news li.urgent h3 { font-size: clamp(1.7rem, 3.4vw, 2.3rem); margin-bottom: 10px; }
+    .news li.urgent p { font-size: 1.08rem; }
+
+    /* О товариществе */
+    .about { display: grid; gap: 44px; grid-template-columns: 1fr 1fr; align-items: start; }
+    .about > * { min-width: 0; }
+    .lead { font-size: 1.2rem; line-height: 1.6; }
+    .facts { margin: 8px 0 0; }
+    .facts div { display: grid; grid-template-columns: 9rem 1fr; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--rule); }
+    .facts dt { color: var(--muted); }
+    .facts dd { margin: 0; font-weight: 500; }
+    .map {
+      border-radius: 22px; min-height: 380px; position: relative; overflow: hidden;
+      background:
+        repeating-linear-gradient(90deg, transparent 0 47px, rgba(43,132,198,.12) 47px 48px),
+        repeating-linear-gradient(0deg, transparent 0 47px, rgba(43,132,198,.12) 47px 48px),
+        var(--water-soft);
+      display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; color: var(--muted); text-align: center; padding: 16px; font-size: .95rem;
+    }
+    .map .pin { width: 52px; height: 52px; border-radius: 50%; background: var(--apple); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 10px rgba(214,58,47,.15); }
+    .map .pin svg { width: 26px; height: 26px; }
+
+    /* Правление */
+    .people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .person {
+      display: grid; grid-template-columns: 64px 1fr; gap: 18px; padding: 22px; border-radius: 18px;
+      background: var(--surface); border: 1px solid var(--rule);
+    }
+    .avatar {
+      width: 64px; height: 64px; border-radius: 50%; background: var(--leaf-soft); color: var(--leaf);
+      display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 1.8rem;
+    }
+    .person:first-child .avatar { background: var(--leaf); color: #fff; }
+    .person h3 { font-size: 1.15rem; margin-bottom: 2px; font-family: var(--sans); font-weight: 600; }
+    .person .role { color: var(--muted); font-size: .93rem; line-height: 1.4; }
+    .tel { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; min-height: 40px; color: var(--ink); text-decoration: none; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .tel svg { width: 32px; height: 32px; padding: 8px; border-radius: 50%; background: var(--leaf-soft); color: var(--leaf); transition: background-color .15s, color .15s; }
+    .tel:hover svg { background: var(--leaf); color: #fff; }
+    .reception {
+      margin: 16px 0 0; padding: 26px 28px; border-radius: 18px; background: var(--leaf); color: #fff;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px;
+    }
+    .reception svg { width: 40px; height: 40px; color: #fff; }
+    .reception strong { font-family: var(--display); font-weight: 400; font-size: 1.5rem; }
+
+    /* Документы */
+    .doc-list { list-style: none; padding: 0; margin: 0; }
+    .doc-list a {
+      display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 18px;
+      padding: 16px 0; border-bottom: 1px solid var(--rule); text-decoration: none; color: var(--ink); font-weight: 600;
+    }
+    .doc-list .ico { width: 44px; height: 44px; border-radius: 12px; background: var(--surface); border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; color: var(--leaf); transition: background-color .15s, color .15s, border-color .15s; }
+    .doc-list .ico svg { width: 22px; height: 22px; }
+    .doc-list a:hover { color: var(--leaf); }
+    .doc-list a:hover .ico { background: var(--leaf); border-color: var(--leaf); color: #fff; }
+    .doc-list .kind { font-size: .78rem; color: var(--muted); font-weight: 600; letter-spacing: .03em; }
+
+    /* Взносы */
+    .pay { display: grid; gap: 44px; grid-template-columns: 1.1fr 1fr; align-items: start; }
+    .pay > * { min-width: 0; }
+    .fees { display: grid; gap: 12px; }
+    .fee { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; padding: 20px 22px; border-radius: 16px; background: var(--surface); border: 1px solid var(--rule); }
+    .fee h3 { font-family: var(--sans); font-size: 1.08rem; font-weight: 700; }
+    .fee .sum { font-family: var(--display); font-size: 1.35rem; text-align: right; }
+    .fee .due { grid-column: 1 / -1; color: var(--muted); font-size: .95rem; }
+    .purpose { margin-top: 24px; padding: 18px 22px; border-radius: 16px; background: var(--leaf-soft); }
+    .purpose q { display: block; font-family: var(--display); font-size: 1.3rem; margin-top: 6px; quotes: "«" "»"; }
+    .receipt { position: relative; background: #fff; color: var(--ink); border: 1px solid var(--rule); border-top: 0; border-radius: 0 0 22px 22px; padding: 30px 28px 28px; box-shadow: 0 30px 60px -40px rgba(30,38,34,.45); }
+    .receipt::before {
+      content: ""; position: absolute; left: 18px; right: 18px; top: 0; height: 9px;
+      background: linear-gradient(90deg, var(--leaf) 0 33%, var(--water) 33% 66%, var(--sun) 66%); left: 0; right: 0; height: 6px;
+    }
+    .receipt-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .receipt dl { margin: 0; }
+    .receipt dl div { display: grid; grid-template-columns: 6.5rem 1fr; gap: 8px; padding: 9px 0; border-bottom: 1px dashed var(--rule); font-size: .98rem; }
+    .receipt dt { color: var(--muted); }
+    .receipt dd { margin: 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+    .copy { min-height: 40px; padding: 6px 16px; font-size: .9rem; color: var(--leaf); border-color: var(--leaf); }
+    .copy:hover { background: var(--leaf); color: #fff; }
+    .copy.done { background: var(--leaf-soft); border-color: var(--leaf-soft); color: var(--leaf-dark); }
+    .qr-row { display: flex; align-items: center; gap: 18px; margin-top: 22px; }
+    .qr { flex: none; width: 128px; height: 128px; border-radius: 14px; background: var(--surface); border: 2px dashed var(--rule); color: var(--muted); display: flex; align-items: center; justify-content: center; text-align: center; font-size: .9rem; line-height: 1.3; }
+    .qr-row p { margin: 0; font-size: .93rem; color: var(--muted); }
+
+    /* График */
+    .services { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .service { padding: 26px; border-radius: 18px; background: var(--surface); border: 1px solid var(--rule); }
+    .service.water { background: var(--water); border-color: var(--water); color: #fff; }
+    .service.water .ph { background: rgba(255,255,255,.2); color: #fff; }
+    .service .ico { width: 48px; height: 48px; border-radius: 14px; background: var(--leaf-soft); color: var(--leaf); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+    .service.water .ico { background: rgba(255,255,255,.16); color: #fff; }
+    .service .ico svg { width: 26px; height: 26px; }
+    .service h3 { margin-bottom: 8px; }
+    .service p { margin: 0; }
+    .pill { display: inline-flex; align-items: center; gap: 8px; font-size: .85rem; font-weight: 600; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,.16); margin-bottom: 12px; }
+    .pill .dot.on { background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,.25); }
+
+    /* Контакты */
+    .contacts { display: grid; gap: 44px; grid-template-columns: 1fr 1.1fr; align-items: start; }
+    .contacts > * { min-width: 0; }
+    .contact-item { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+    .contact-item:first-child { padding-top: 0; }
+    .contact-item > svg { width: 44px; height: 44px; padding: 11px; border-radius: 50%; background: var(--leaf-soft); color: var(--leaf); }
+    .contact-item .label { color: var(--muted); font-size: .88rem; display: block; line-height: 1.3; }
+    .contact-item a { font-weight: 600; }
+    form { display: grid; gap: 18px; background: var(--surface); border: 1px solid var(--rule); border-radius: 22px; padding: 34px; }
+    form .hint { margin: -8px 0 0; font-size: .95rem; color: var(--muted); }
+    label { display: block; font-weight: 600; font-size: .92rem; margin-bottom: 6px; }
+    input, textarea { width: 100%; font: inherit; padding: 13px 15px; border: 1.5px solid var(--rule); border-radius: 12px; background: #fff; color: var(--ink); transition: border-color .15s, box-shadow .15s; }
+    input:hover, textarea:hover { border-color: #aebba2; }
+    input:focus, textarea:focus { outline: none; border-color: var(--leaf); box-shadow: 0 0 0 4px var(--leaf-soft); }
+    textarea { min-height: 140px; resize: vertical; }
+    form .btn { justify-self: start; }
+
+    .footer { background: var(--footer); color: #bfd0c4; padding: 64px 0 40px; font-size: .95rem; }
+    .footer .big { font-family: var(--display); color: #fff; font-size: clamp(2.6rem, 8vw, 6rem); line-height: 1; margin: 0 0 40px; letter-spacing: -.01em; }
+    .footer .row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; border-top: 1px solid rgba(255,255,255,.14); padding-top: 28px; }
+    .footer a { color: #fff; }
+    .to-top { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 18px; border: 1px solid rgba(255,255,255,.3); border-radius: 999px; text-decoration: none; }
+    .to-top:hover { background: #fff; color: var(--footer); }
+    .to-top svg { width: 16px; height: 16px; }
+
+    @media (max-width: 1080px) {
+      .pay { grid-template-columns: 1fr; }
+      .receipt { max-width: 36rem; }
+    }
+    @media (max-width: 980px) {
+      .burger { display: inline-flex; }
+      .nav {
+        position: absolute; top: 72px; left: 0; right: 0; flex-direction: column; gap: 2px;
+        background: var(--paper); color: var(--ink); padding: 8px 16px 18px; box-shadow: 0 1px 0 var(--rule), 0 20px 30px -24px rgba(30,38,34,.4);
+        visibility: hidden; opacity: 0; transform: translateY(-8px);
+        transition: opacity .2s var(--ease), transform .2s var(--ease), visibility 0s .2s;
+      }
+      .nav.open { visibility: visible; opacity: 1; transform: none; transition: opacity .2s var(--ease), transform .2s var(--ease); }
+      .nav a { padding: 12px 14px; font-size: 1.05rem; border-radius: 12px; opacity: 1; }
+      .nav a:hover { background: var(--leaf-soft); }
+      .header:has(.nav.open) { background: var(--paper); color: var(--ink); }
+      .hero { padding: 112px 0 72px; }
+      .hero .container { grid-template-columns: 1fr; gap: 48px; }
+      .wheel { justify-self: center; max-width: 420px; }
+      .section { padding: 64px 0; }
+      .section > .container { grid-template-columns: 1fr; gap: 28px; }
+      .section-head { position: static; }
+      .section-head p { max-width: none; }
+      .about, .contacts { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      body { font-size: 17px; }
+      .news li { grid-template-columns: 1fr; gap: 4px; }
+      .news li.urgent { padding: 26px 22px; }
+      .people, .services { grid-template-columns: 1fr; }
+      .facts div, .receipt dl div { grid-template-columns: 1fr; gap: 0; }
+      .receipt { padding: 28px 20px 22px; }
+      .qr-row { flex-direction: column; align-items: start; }
+      form { padding: 22px; }
+      form .btn, .hero-links .btn { flex: 1 1 auto; justify-self: stretch; }
+      .wheel .mlabel { font-size: 15px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<a class="skip" href="#news">Перейти к содержимому</a>
+
+<header class="header">
+  <div class="container">
+    <a href="#top" class="logo">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="19" r="10" fill="#d63a2f"/>
+        <path d="M16 9c0-3 2-5 5-6" stroke="#8a6440" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M17 8c3-3 7-2 8 0-3 2-6 2-8 0z" fill="#2e8540"/>
+      </svg>
+      «Мичуринец»
+    </a>
+    <button class="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="site-nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path class="l1" d="M4 6h16"/><path class="l2" d="M4 12h16"/><path class="l3" d="M4 18h16"/></svg>
+    </button>
+    <nav class="nav" id="site-nav" aria-label="Разделы сайта">
+      <a href="#news">Объявления</a>
+      <a href="#about">О товариществе</a>
+      <a href="#board">Правление</a>
+      <a href="#docs">Документы</a>
+      <a href="#payments">Взносы</a>
+      <a href="#schedule">График</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- Первый экран -->
+  <div class="hero">
+    <div class="container">
+      <div>
+        <p class="hero-kicker">Садоводческое некоммерческое товарищество</p>
+        <h1><span class="q">«</span>Мичуринец<span class="q">»</span></h1>
+        <p class="hero-intro">Объявления правления, документы, размеры взносов и реквизиты для оплаты — всё, что нужно садоводам, на одной странице.</p>
+        <div class="hero-links">
+          <a href="#news" class="btn btn-apple">Читать объявления</a>
+          <a href="#payments" class="btn btn-ghost">Оплатить взносы</a>
+          <a href="#contacts" class="btn btn-ghost">Написать в правление</a>
+        </div>
+      </div>
+
+      <!-- Годовой круг: месяцы, сезон подачи воды (data-from / data-to, ММ-ДД) и стрелка сегодняшнего дня -->
+      <figure class="wheel" id="wheel" data-from="05-01" data-to="10-01" aria-label="Календарь сезона">
+        <svg viewBox="0 0 400 400" id="wheel-svg" role="img" aria-labelledby="wheel-desc"><desc id="wheel-desc">Год по месяцам, отмечены сезон подачи воды и сегодняшний день</desc></svg>
+        <div class="wheel-center">
+          <div class="date" id="today-label">—</div>
+          <div class="water-now" id="water-status"><span class="dot"></span><span>—</span></div>
+        </div>
+        <figcaption>Летний водопровод: <span class="ph">с 1 мая по 1 октября</span></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <!-- Объявления -->
+  <section id="news" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Объявления</h2>
+        <p>Новости и решения правления, свежие сверху.</p>
+      </div>
+      <ul class="news">
+        <li class="urgent">
+          <time><span class="ph">20.10.2026</span></time>
+          <div>
+            <span class="tag">Важно</span>
+            <h3>Отключение воды на зиму</h3>
+            <p>Летний водопровод будет отключён и слит <span class="ph">1 ноября</span>. Просим перекрыть краны на участках.</p>
+          </div>
+        </li>
+        <li>
+          <time><span class="ph">10.10.2026</span></time>
+          <div>
+            <span class="tag">Собрание</span>
+            <h3>Общее собрание членов СНТ</h3>
+            <p>Состоится <span class="ph">дата, время</span> у здания правления. Повестка: отчёт правления, смета на следующий год.</p>
+          </div>
+        </li>
+        <li>
+          <time><span class="ph">01.10.2026</span></time>
+          <div>
+            <span class="tag">Хозяйство</span>
+            <h3>Вывоз крупногабаритного мусора</h3>
+            <p>Контейнер для крупногабаритных отходов будет установлен у въезда <span class="ph">дата</span>.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- О товариществе -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>О товариществе</h2>
+      </div>
+      <div class="about">
+        <div>
+          <p class="lead">СНТ «Мичуринец» основано в <span class="ph">19__</span> году. На территории товарищества <span class="ph">___</span> участков, проведены электричество и летний водопровод, есть охраняемый въезд.</p>
+          <dl class="facts">
+            <div><dt>Адрес</dt><dd><span class="ph">область, район, населённый пункт</span></dd></div>
+            <div><dt>Площадь</dt><dd><span class="ph">__ га</span></dd></div>
+            <div><dt>Участков</dt><dd><span class="ph">___</span></dd></div>
+            <div><dt>Как добраться</dt><dd><span class="ph">на автобусе № __ до остановки «…», на электричке до станции «…»</span></dd></div>
+          </dl>
+        </div>
+        <div class="map">
+          <!-- Сюда вставить код карты из конструктора Яндекс Карт: https://yandex.ru/map-constructor/ -->
+          <span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span>Здесь будет карта<br>(вставить код из конструктора Яндекс Карт)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Правление -->
+  <section id="board" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Правление</h2>
+        <p>Звоните по вопросам взносов, электричества и общего хозяйства.</p>
+      </div>
+      <div>
+        <div class="people">
+          <div class="person">
+            <div class="avatar" aria-hidden="true">П</div>
+            <div>
+              <h3><span class="ph">Фамилия Имя Отчество</span></h3>
+              <div class="role">Председатель правления</div>
+              <a class="tel" href="tel:+70000000000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="#i-phone"/></svg>+7 (___) ___-__-__</a>
+            </div>
+          </div>
+          <div class="person">
+            <div class="avatar" aria-hidden="true">Б</div>
+            <div>
+              <h3><span class="ph">Фамилия Имя Отчество</span></h3>
+              <div class="role">Бухгалтер / казначей</div>
+              <a class="tel" href="tel:+70000000000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="#i-phone"/></svg>+7 (___) ___-__-__</a>
+            </div>
+          </div>
+          <div class="person">
+            <div class="avatar" aria-hidden="true">Э</div>
+            <div>
+              <h3><span class="ph">Фамилия Имя Отчество</span></h3>
+              <div class="role">Ответственный за электрохозяйство</div>
+              <a class="tel" href="tel:+70000000000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="#i-phone"/></svg>+7 (___) ___-__-__</a>
+            </div>
+          </div>
+          <div class="person">
+            <div class="avatar" aria-hidden="true">Р</div>
+            <div>
+              <h3><span class="ph">Фамилия Имя Отчество</span></h3>
+              <div class="role">Председатель ревизионной комиссии</div>
+              <a class="tel" href="tel:+70000000000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="#i-phone"/></svg>+7 (___) ___-__-__</a>
+            </div>
+          </div>
+        </div>
+        <p class="reception">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <strong>Приём садоводов</strong>
+          <span><span class="ph">суббота и воскресенье, 10:00–13:00</span>, здание правления</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Документы -->
+  <section id="docs" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Документы</h2>
+        <p>Устав, протоколы собраний и сметы для скачивания.</p>
+      </div>
+      <ul class="doc-list">
+        <li><a href="docs/ustav.pdf"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><use href="#i-doc"/></svg></span><span>Устав СНТ «Мичуринец»</span><span class="kind">PDF</span></a></li>
+        <li><a href="docs/protokol.pdf"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><use href="#i-doc"/></svg></span><span>Протокол общего собрания от <span class="ph">__.__.____</span></span><span class="kind">PDF</span></a></li>
+        <li><a href="docs/smeta.pdf"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><use href="#i-doc"/></svg></span><span>Приходно-расходная смета на <span class="ph">2026</span> год</span><span class="kind">PDF</span></a></li>
+        <li><a href="docs/otchet.pdf"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><use href="#i-doc"/></svg></span><span>Отчёт ревизионной комиссии</span><span class="kind">PDF</span></a></li>
+        <li><a href="https://www.consultant.ru/document/cons_doc_LAW_221173/" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span><span>Федеральный закон № 217-ФЗ о ведении садоводства</span><span class="kind">сайт</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Взносы -->
+  <section id="payments" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Взносы и оплата</h2>
+        <p>Размеры и сроки платежей на текущий год.</p>
+      </div>
+      <div class="pay">
+        <div>
+          <div class="fees">
+            <div class="fee"><h3>Членский взнос</h3><div class="sum"><span class="ph">___ ₽ / сотка</span></div><div class="due">Оплатить <span class="ph">до 1 июля</span></div></div>
+            <div class="fee"><h3>Целевой взнос</h3><div class="sum"><span class="ph">___ ₽ с участка</span></div><div class="due">Оплатить <span class="ph">до 1 сентября</span></div></div>
+            <div class="fee"><h3>Электроэнергия</h3><div class="sum"><span class="ph">__ ₽/кВт·ч</span></div><div class="due">По счётчику, ежемесячно</div></div>
+          </div>
+          <p class="purpose">В назначении платежа укажите номер участка, ФИО и вид взноса, например:
+            <q>Уч. 45, Иванов И.И., членский взнос 2026</q></p>
+        </div>
+        <div class="receipt">
+          <div class="receipt-head">
+            <h3>Реквизиты</h3>
+            <button type="button" class="btn copy" id="copy-req">Скопировать</button>
+          </div>
+          <dl id="requisites">
+            <div><dt>Получатель</dt><dd>СНТ «Мичуринец»</dd></div>
+            <div><dt>ИНН</dt><dd><span class="ph">__________</span></dd></div>
+            <div><dt>КПП</dt><dd><span class="ph">_________</span></dd></div>
+            <div><dt>Р/с</dt><dd><span class="ph">____________________</span></dd></div>
+            <div><dt>Банк</dt><dd><span class="ph">________________</span></dd></div>
+            <div><dt>БИК</dt><dd><span class="ph">_________</span></dd></div>
+            <div><dt>К/с</dt><dd><span class="ph">____________________</span></dd></div>
+          </dl>
+          <div class="qr-row">
+            <div class="qr">QR-код<br>для оплаты</div>
+            <p>Отсканируйте в приложении банка — реквизиты подставятся сами. Останется ввести сумму и назначение платежа.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- График -->
+  <section id="schedule" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>График и сервисы</h2>
+      </div>
+      <div class="services">
+        <div class="service water">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span>
+          <span class="pill" id="water-pill"><span class="dot"></span><span>—</span></span>
+          <h3>Подача воды</h3>
+          <p>Сезон: <span class="ph">с 1 мая по 1 октября</span>.<br>Полив: <span class="ph">вт, чт, сб — 8:00–11:00, 18:00–21:00</span>.</p>
+        </div>
+        <div class="service">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></span>
+          <h3>Вывоз мусора</h3>
+          <p><span class="ph">Каждый понедельник и пятницу</span>. Контейнерная площадка — у главного въезда.</p>
+        </div>
+        <div class="service">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="14" rx="3"/><path d="M4 11h16M8 21l1-4M16 21l-1-4"/><circle cx="8" cy="14" r=".5"/><circle cx="16" cy="14" r=".5"/></svg></span>
+          <h3>Транспорт</h3>
+          <p>Автобус <span class="ph">№ __</span>: <span class="ph">расписание</span>.<br>Электричка до станции <span class="ph">«…»</span>.</p>
+        </div>
+        <div class="service">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg></span>
+          <h3>Электроэнергия</h3>
+          <p>Показания счётчика передавать <span class="ph">до 25 числа</span> казначею или в чат товарищества.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Контакты -->
+  <section id="contacts" class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Контакты</h2>
+      </div>
+      <div class="contacts">
+        <div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><use href="#i-phone"/></svg>
+            <div><span class="label">Председатель</span><a href="tel:+70000000000">+7 (___) ___-__-__</a></div>
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+            <div><span class="label">Электронная почта</span><a href="mailto:snt-michurinets@example.ru"><span class="ph">snt-michurinets@example.ru</span></a></div>
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 1 1 21 11.5z"/></svg>
+            <div><span class="label">Чат садоводов</span><a href="#"><span class="ph">ссылка на Telegram / WhatsApp</span></a></div>
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div><span class="label">Здание правления</span><span class="ph">адрес здания правления</span></div>
+          </div>
+        </div>
+        <form id="feedback">
+          <h3>Написать в правление</h3>
+          <p class="hint">Откроется ваша почтовая программа с готовым письмом.</p>
+          <div><label for="f-name">Ваше имя и номер участка</label><input id="f-name" name="name" autocomplete="name" required></div>
+          <div><label for="f-phone">Телефон</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+          <div><label for="f-msg">Сообщение</label><textarea id="f-msg" name="message" required></textarea></div>
+          <button type="submit" class="btn btn-dark">Отправить письмо</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p class="big">«Мичуринец»</p>
+    <div class="row">
+      <div>© <span id="year">2026</span> СНТ «Мичуринец»<br>ИНН <span class="ph">__________</span>, ОГРН <span class="ph">_____________</span></div>
+      <a href="#top" class="to-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Наверх</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Общие иконки -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+</svg>
+
+<script>
+  // Мобильное меню
+  const burger = document.querySelector('.burger');
+  const nav = document.querySelector('.nav');
+  const setMenu = open => {
+    nav.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+  };
+  burger.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+
+  // Шапка светлеет, когда первый экран прокручен
+  const header = document.querySelector('.header');
+  const hero = document.querySelector('.hero');
+  const onScroll = () => {
+    const past = scrollY > hero.offsetHeight - 72;
+    header.classList.toggle('scrolled', past);
+    header.classList.toggle('dim', !past && scrollY > 8);
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Подсветка текущего раздела в меню
+  const links = [...nav.querySelectorAll('a')];
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+
+  // Годовой круг: январь сверху, год идёт по часовой стрелке
+  const now = new Date();
+  const year = now.getFullYear();
+  const yearStart = new Date(year, 0, 1);
+  const yearLen = new Date(year + 1, 0, 1) - yearStart;
+  const frac = date => (date - yearStart) / yearLen;
+  const parse = mmdd => { const [m, d] = mmdd.split('-').map(Number); return new Date(year, m - 1, d); };
+  const C = 200;
+  const pt = (f, r) => { const a = f * 2 * Math.PI - Math.PI / 2; return [C + r * Math.cos(a), C + r * Math.sin(a)]; };
+  const arc = (f0, f1, r) => { const [x0, y0] = pt(f0, r), [x1, y1] = pt(f1, r); return `M${x0} ${y0}A${r} ${r} 0 ${f1 - f0 > .5 ? 1 : 0} 1 ${x1} ${y1}`; };
+  const ring = (f0, f1, r0, r1) => {
+    const [a, b] = pt(f0, r1), [c, d] = pt(f1, r1), [e, g] = pt(f1, r0), [h, k] = pt(f0, r0);
+    return `M${a} ${b}A${r1} ${r1} 0 0 1 ${c} ${d}L${e} ${g}A${r0} ${r0} 0 0 0 ${h} ${k}Z`;
+  };
+  const months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+  const seasonFill = ['#dde9f2', '#dde9f2',
+    '#d6ecc9', '#d6ecc9', '#d6ecc9',
+    '#a9d89a', '#a9d89a', '#a9d89a',
+    '#f6dc94', '#f6dc94', '#f6dc94', '#dde9f2'];
+
+  const wheel = document.getElementById('wheel');
+  const from = parse(wheel.dataset.from), to = parse(wheel.dataset.to);
+  const waterOn = now >= from && now < to;
+  let svg = '';
+  months.forEach((m, i) => {
+    const f0 = frac(new Date(year, i, 1)), f1 = frac(new Date(year, i + 1, 1));
+    svg += `<path class="seg" d="${ring(f0, f1, 132, 192)}" fill="${seasonFill[i]}"/>`;
+    const [x, y] = pt((f0 + f1) / 2, 162);
+    svg += `<text class="mlabel${i === now.getMonth() ? ' now' : ''}" x="${x}" y="${y}">${m}</text>`;
+  });
+  svg += `<circle class="hub" cx="${C}" cy="${C}" r="104"/>`;
+  svg += `<path id="water-arc" class="water${waterOn ? '' : ' off'}" d="${arc(frac(from), frac(to), 118)}"/>`;
+  const deg = frac(now) * 360;
+  const [hx, hy] = pt(0, 198);
+  svg += `<g id="hand" transform="rotate(${deg} ${C} ${C})">` +
+    `<line class="hand" x1="${C}" y1="${C - 106}" x2="${hx}" y2="${hy}"/>` +
+    `<circle class="hand-dot" cx="${hx}" cy="${hy}" r="8"/></g>`;
+  document.getElementById('wheel-svg').insertAdjacentHTML('beforeend', svg);
+
+  // Единственная анимация на странице: стрелка доходит от начала года до сегодняшнего дня
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const hand = document.getElementById('hand');
+    const t0 = performance.now(), dur = 1400;
+    const step = t => {
+      const p = Math.min((t - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+      hand.setAttribute('transform', `rotate(${deg * e} ${C} ${C})`);
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const dateLabel = now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+  document.getElementById('today-label').textContent = dateLabel;
+  const waterText = waterOn ? 'вода подаётся' : 'вода не подаётся';
+  [document.getElementById('water-status'), document.getElementById('water-pill')].forEach(el => {
+    el.querySelector('.dot').classList.toggle('on', waterOn);
+    el.lastElementChild.textContent = 'Сейчас ' + waterText;
+  });
+
+  // Копирование реквизитов
+  const copyBtn = document.getElementById('copy-req');
+  copyBtn.addEventListener('click', async () => {
+    const text = [...document.querySelectorAll('#requisites div')]
+      .map(r => r.querySelector('dt').textContent + ': ' + r.querySelector('dd').textContent).join('\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      copyBtn.textContent = 'Скопировано';
+      copyBtn.classList.add('done');
+    } catch {
+      copyBtn.textContent = 'Не удалось скопировать';
+    }
+    setTimeout(() => { copyBtn.textContent = 'Скопировать'; copyBtn.classList.remove('done'); }, 2000);
+  });
+
+  // Форма: открывает почтовый клиент с заполненным письмом
+  document.getElementById('feedback').addEventListener('submit', e => {
+    e.preventDefault();
+    const f = e.target;
+    const body = `${f.message.value}\n\n${f.name.value}\n${f.phone.value}`;
+    location.href = 'mailto:snt-michurinets@example.ru?subject=' +
+      encodeURIComponent('Сообщение с сайта СНТ') + '&body=' + encodeURIComponent(body);
+  });
+
+  document.getElementById('year').textContent = year;
+</script>
+</body>
+</html>
